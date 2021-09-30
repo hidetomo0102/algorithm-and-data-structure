@@ -85,3 +85,92 @@ def insertion_sort(numbers: list):
             numbers[i], numbers[i - 1] = numbers[i - 1], numbers[i]
             i -= 1
     return numbers
+
+
+def bucket_sort(numbers: list):
+    max_num = max(numbers)
+    length = len(numbers)
+    size = max_num // length
+
+    # バケット分だけリストを作成
+    buckets = [[] for _ in range(size)]
+    for num in numbers:
+        i = num // size
+        if i != size:
+            buckets[i].append(num)
+        else:
+            buckets[i - 1].append(num)
+
+    result = []
+    for j in range(size):
+        # 各バケットに対してInsertionSort
+        insertion_sort(buckets[j])
+        result += buckets[j]
+
+    return result
+
+
+def shell_sort(numbers: list):
+    length = len(numbers)
+    gap = length // 2
+
+    while gap > 0:
+        for i in range(gap, length):
+            # 入れ替えた数字はgapごとに左端まで比較
+            while i >= gap:
+                if numbers[i] < numbers[i - gap]:
+                    numbers[i], numbers[i - gap] = numbers[i - gap], numbers[i]
+                i -= gap
+        gap //= 2
+
+    return numbers
+
+
+def counting_sort(numbers: list):
+    max_num = max(numbers)
+    counts = [0] * (max_num + 1)
+    result = [0] * len(numbers)
+
+    for num in numbers:
+        counts[num] += 1
+    # 各インデックスの累積和を取る（前から何番目にあるのか）
+    for i in range(1, len(counts)):
+        counts[i] += counts[i - 1]
+
+    j = len(numbers) - 1
+    while j >= 0:
+        idx = numbers[j]
+        result[counts[idx]] = numbers[j]
+        j -= 1
+
+    return result
+
+
+def radix_sort(numbers: list):
+    def _counting_sort(numbers: list, place: int):
+        counts = [0] * 10
+        result = [0] * len(numbers)
+
+        for num in numbers:
+            index = int(num / place) % 10
+            counts[index] += 1
+
+        for i in range(1, 10):
+            counts[i] += counts[i - 1]
+
+        j = len(numbers) - 1
+        while j >= 0:
+            idx = int(numbers[j] / place) % 10
+            result[counts[idx] - 1] = numbers[j]
+            counts[idx] -= 1
+            j -= 1
+
+        return result
+
+    max_num = max(numbers)
+    place = 1
+    while max_num > place:
+        numbers = _counting_sort(numbers, place)
+        place *= 10
+
+    return numbers
