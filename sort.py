@@ -174,3 +174,61 @@ def radix_sort(numbers: list):
         place *= 10
 
     return numbers
+
+
+def quick_sort(numbers: list):
+    def _partition(numbers: list, low: int, high: int) -> int:
+        """
+        最終的なpivotのインデックスを返す
+        """
+        i = low - 1
+        pivot = numbers[high]
+        for j in range(low, high):
+            if numbers[j] <= pivot:
+                i += 1
+                numbers[i], numbers[j] = numbers[j], numbers[i]
+        numbers[i + 1], numbers[high] = numbers[high], numbers[i + 1]
+        return i + 1
+
+    def _quick_sort(numbers: list, low: int, high: int):
+        if low < high:
+            partition_index = _partition(numbers, low, high)
+            # 再起的にQuickソートを呼ぶ
+            _quick_sort(numbers, low, partition_index + 1)
+            _quick_sort(numbers, partition_index + 1, high)
+
+    _quick_sort(numbers, 0, len(numbers) - 1)
+    return numbers
+
+
+def merge_sort(numbers: list):
+    if len(numbers) <= 1:
+        return numbers
+
+    center = len(numbers) // 2
+    left = numbers[:center]
+    right = numbers[center:]
+
+    merge_sort(left)
+    merge_sort(right)
+
+    i = j = k = 0
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            numbers[k] = left[i]
+        else:
+            numbers[k] = right[j]
+            j += 1
+        k += 1
+
+    while i < len(left):
+        numbers[k] = left[i]
+        i += 1
+        k += 1
+
+    while j < len(right):
+        numbers[k] = right[j]
+        j += 1
+        k += 1
+
+    return numbers
