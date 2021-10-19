@@ -41,6 +41,11 @@ class HashTable:
         return self.get(key)
 
 
+hash_table = HashTable()
+hash_table["car"] = "Tesla"
+hash_table["sns"] = "Youtube"
+print(hash_table["sns"])
+
 """
 1. Input: [11, 2, 5, 9, 10, 3], 12 => Output: (2, 10) or None
 2. Input: [11, 2, 5, 9, 10, 3] (sum:20) => Output: (11, 9) or None
