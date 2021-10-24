@@ -1,32 +1,47 @@
 """
-Symmetric
-INPUT: [(1, 2), (3, 5), (4, 7), (5, 3), (7, 4)]
-OUTPUT: [(5, 3), (7, 4)]
+Find most frequently appearing char
+INPUT: 'I have a pen. I have an apple. Ah, Applepen!'
+OUTPUT: ('a', 7)
 """
+import operator
+from collections import Counter
+
+INPUT = 'I have a pen. I have an apple. Ah, Applepen!'
 
 
-def symmetric_pair1(pairs: list):
-    center = len(pairs) // 2
-    pair_list = []
-    ans = []
-    for i, value in enumerate(pairs):
-        if i <= center:
-            pair_list.append((value[1], value[0]))
-        else:
-            if value in pair_list:
-                ans.append(value)
-
-    return ans
-
-
-def symmetric_pair2(pairs: list):
+def find_frequent_char1(chars: str) -> tuple:
+    """
+    デフォルト辞書を使う
+    """
     cache = {}
-    ans = []
-    for pair in pairs:
-        first, second = pair[0], pair[1]
-        value = cache.get(second)
-        if not value:
-            cache[first] = second
-        elif value == first:
-            ans.append(pair)
-    return ans
+    for char in chars.lower():
+        if char == " ":
+            continue
+        else:
+            cache[char] = cache.get(char, 0) + 1
+    max_key = max(cache, key=cache.get)
+    return max_key, cache[max_key]
+
+
+def find_frequent_char2(chars: str) -> tuple:
+    """
+    collections Counterを使う
+    """
+    c = Counter()
+    for char in chars.lower():
+        if not char.isspace():
+            c[char] += 1
+    max_key = max(c, key=c.get)
+    return max_key, c[max_key]
+
+
+def find_frequent_char3(chars: str) -> tuple:
+    """
+    operator itemgetterを使う
+    """
+    chars = chars.lower()
+    l = []
+    for char in chars:
+        if not char.isspace():
+            l.append((char, chars.count(char)))
+    return max(l, key=operator.itemgetter(1))
