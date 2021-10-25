@@ -1,47 +1,33 @@
 """
-Find most frequently appearing char
-INPUT: 'I have a pen. I have an apple. Ah, Applepen!'
-OUTPUT: ('a', 7)
+N 個の荷物があり、i(1≦i≦N) 番目の荷物には価値 vi と重さ wiが割り当てられている。
+許容重量 Wのナップサックが1つある。
+重さの和が W以下となるように荷物の集合を選びナップサックに詰め込むとき、価値の和の最大値を求めよ。
+（ただし、同じ荷物は一度しか選ぶことができない）
+
+INPUT:  N W
+        v(1) w(1)
+        v(2) w(2)
+        ...
+        v(n) w(n)
 """
-import operator
-from collections import Counter
 
-INPUT = 'I have a pen. I have an apple. Ah, Applepen!'
+N, W = map(int, input().split())
+w = []
+v = []
 
+for i in range(N):
+    x, y = map(int, input().split())
+    w.append(x)
+    v.append(y)
 
-def find_frequent_char1(chars: str) -> tuple:
-    """
-    デフォルト辞書を使う
-    """
-    cache = {}
-    for char in chars.lower():
-        if char == " ":
-            continue
+# テーブルの作成
+dp = [[0] * (W + 1) for j in range(N + 1)]
+
+for i in range(N):
+    for j in range(W + 1):
+        if j < w[i]:
+            dp[i + 1][j] = dp[i][j]
         else:
-            cache[char] = cache.get(char, 0) + 1
-    max_key = max(cache, key=cache.get)
-    return max_key, cache[max_key]
+            dp[i + 1][j] = max(dp[i][j], dp[i][j - w[i]] + v[i])
 
-
-def find_frequent_char2(chars: str) -> tuple:
-    """
-    collections Counterを使う
-    """
-    c = Counter()
-    for char in chars.lower():
-        if not char.isspace():
-            c[char] += 1
-    max_key = max(c, key=c.get)
-    return max_key, c[max_key]
-
-
-def find_frequent_char3(chars: str) -> tuple:
-    """
-    operator itemgetterを使う
-    """
-    chars = chars.lower()
-    l = []
-    for char in chars:
-        if not char.isspace():
-            l.append((char, chars.count(char)))
-    return max(l, key=operator.itemgetter(1))
+print(dp[N][W])
