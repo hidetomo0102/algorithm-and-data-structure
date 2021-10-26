@@ -1,33 +1,32 @@
 """
-N 個の荷物があり、i(1≦i≦N) 番目の荷物には価値 vi と重さ wiが割り当てられている。
-許容重量 Wのナップサックが1つある。
-重さの和が W以下となるように荷物の集合を選びナップサックに詰め込むとき、価値の和の最大値を求めよ。
-（ただし、同じ荷物は一度しか選ぶことができない）
-
-INPUT:  N W
-        v(1) w(1)
-        v(2) w(2)
-        ...
-        v(n) w(n)
+2つの文字列 S, Tが与えられる。
+Sに対し、変更・挿入・削除といった操作を施してTに変換する
+このとき最小の操作回数は？
+INPUT: S T
 """
 
-N, W = map(int, input().split())
-w = []
-v = []
 
-for i in range(N):
-    x, y = map(int, input().split())
-    w.append(x)
-    v.append(y)
+def levenshtein_distance(s: str, t: str) -> int:
+    if s == t:
+        return 0
+    s_len = len(s)
+    t_len = len(t)
 
-# テーブルの作成
-dp = [[0] * (W + 1) for j in range(N + 1)]
+    if s == "": return t_len
+    if t == "": return s_len
 
-for i in range(N):
-    for j in range(W + 1):
-        if j < w[i]:
-            dp[i + 1][j] = dp[i][j]
-        else:
-            dp[i + 1][j] = max(dp[i][j], dp[i][j - w[i]] + v[i])
+    matrix = []
+    for i in range(s_len + 1):
+        matrix.append([0 for _ in range(t_len + 1)])
 
-print(dp[N][W])
+    for i in range(1, s_len + 1):
+        sc = s[i - 1]
+        for j in range(1, t_len + 1):
+            tc = t[j - 1]
+            cost = 0 if (sc == tc) else 1
+            matrix[i][j] = min(
+                matrix[i - 1][j] + 1,
+                matrix[i][j - 1] + 1,
+                matrix[i - 1][j - 1] + cost
+            )
+    return matrix[s_len][t_len]
