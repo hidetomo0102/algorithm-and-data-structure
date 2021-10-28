@@ -13,7 +13,7 @@ class MinHeap:
         # 正しい順序に並べる
         self._heapify_up(self.current_size)
 
-    def pop(self):
+    def pop(self) -> Optional[int]:
         if len(self.heap) == 1:
             return
 
