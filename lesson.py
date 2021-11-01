@@ -1,31 +1,52 @@
 """
-ある値が2つのリストに出現したとき、出現回数が少ない方のリストから削除する
-（もし両方のリストに同数ある場合はスキップ）
-
-INPUT X: [1, 2, 3, 4, 4, 5, 5, 8, 10] Y: [4, 5, 5, 5, 6, 7, 8, 8, 10]
-  =>  X: [1, 2, 3, 4, 4, 10] Y: [5, 5, 5, 6, 7, 8, 8, 10]
+[1] => [2] => 2
+[2, 3] => [2, 4] => 24
+[8, 9] => [9, 0] => 90
+[0, 9, 9] => [1, 0, 0] => 100
 """
+
 from typing import List
-from collections import Counter
-
-ans_x = []
-ans_y = []
 
 
-def min_count_remove(x: List[int], y: List[int]):
-    x_counter = Counter(x)
-    y_counter = Counter(y)
-
-    for x_key, x_value in x_counter.items():
-        y_value = y_counter.get(x_key)
-        if y_value:
-            if x_value < y_value:
-                # そのkey以外の要素でリストを置き換える
-                x[:] = [i for i in x if i != x_key]
-            elif x_value > y_value:
-                y[:] = [i for i in y if i != x_key]
-    return x, y
+def remove_zero(numbers: List[int]):
+    """
+    足し算したリストの先頭に0が入らないようにする
+    """
+    if numbers and numbers[0] == 0:
+        numbers.pop(0)
+        remove_zero(numbers)
 
 
-x, y = min_count_remove([1, 2, 3, 4, 4, 5, 5, 8, 10], [4, 5, 5, 5, 6, 7, 8, 8, 10])
-print(x, y)
+def list_to_int(numbers: List[int]) -> int:
+    x = 10 ** (len(numbers) - 1)
+    ans = 0
+    for num in numbers:
+        ans += num * x
+        x /= 10
+    return int(ans)
+
+
+def list_plus1_to_int(numbers: List[int]) -> int:
+    last_idx = len(numbers) - 1
+    numbers[last_idx] += 1
+    while 0 < last_idx:
+        if numbers[last_idx] != 10:
+            remove_zero(numbers)
+            break
+        # 繰り上がりが発生するとき
+        numbers[last_idx] = 0
+        numbers[last_idx - 1] += 1
+        last_idx -= 1
+    else:
+        if numbers[0] == 10:
+            numbers[0] = 1
+            numbers.append(0)
+    print(numbers)
+
+    return list_to_int(numbers)
+
+
+a = list_plus1_to_int([9, 9])
+b = list_plus1_to_int([7, 8, 9])
+print(a)  # 100
+print(b)  # 790
