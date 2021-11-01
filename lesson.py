@@ -1,52 +1,77 @@
-"""
-[1] => [2] => 2
-[2, 3] => [2, 4] => 24
-[8, 9] => [9, 0] => 90
-[0, 9, 9] => [1, 0, 0] => 100
-"""
-
+import string
 from typing import List
 
 
-def remove_zero(numbers: List[int]):
+def snake_string_v1(chars: str) -> List[List[str]]:
+    result = [[], [], []]
+    result_idxes = {0, 1, 2}
+    insert_idx = 0
+
+    for i, s in enumerate(chars):
+        if i % 4 == 1:
+            insert_idx = 0
+        elif i % 2 == 0:
+            insert_idx = 1
+        elif i % 4 == 3:
+            insert_idx = 2
+
+        result[insert_idx].append(s)
+        for rest_idx in result_idxes - {insert_idx}:
+            result[rest_idx].append(' ')
+    return result
+
+
+def snake_string_v2(chars: str, depth: int) -> List[List[str]]:
     """
-    足し算したリストの先頭に0が入らないようにする
+    フレキシブルなスネーク表示関数
+
+    :param chars: 並べたい文字列
+    :param depth: 何段で表示するか
     """
-    if numbers and numbers[0] == 0:
-        numbers.pop(0)
-        remove_zero(numbers)
+    result = [[] for _ in range(depth)]
+    result_idxes = {i for i in range(depth)}
+    insert_idx = int(depth / 2)
+
+    def positive(i):
+        return i + 1
+
+    def negative(i):
+        return i - 1
+
+    op = negative
+
+    for c in chars:
+        result[insert_idx].append(c)
+        for rest_idx in result_idxes - {insert_idx}:
+            result[rest_idx].append(' ')
+        if insert_idx <= 0:
+            op = positive
+        if insert_idx >= depth - 1:
+            op = negative
+        insert_idx = op(insert_idx)
+
+    return result
 
 
-def list_to_int(numbers: List[int]) -> int:
-    x = 10 ** (len(numbers) - 1)
-    ans = 0
-    for num in numbers:
-        ans += num * x
-        x /= 10
-    return int(ans)
+numbers = [str(i) for j in range(5) for i in range(10)]
+chars = ''.join(numbers)
+for line in snake_string_v1(chars):
+    print(''.join(line))
+    #  1   5   9   3   7   1   5   9   3   7   1   5   9
+    # 0 2 4 6 8 0 2 4 6 8 0 2 4 6 8 0 2 4 6 8 0 2 4 6 8
+    #    3   7   1   5   9   3   7   1   5   9   3   7
 
-
-def list_plus1_to_int(numbers: List[int]) -> int:
-    last_idx = len(numbers) - 1
-    numbers[last_idx] += 1
-    while 0 < last_idx:
-        if numbers[last_idx] != 10:
-            remove_zero(numbers)
-            break
-        # 繰り上がりが発生するとき
-        numbers[last_idx] = 0
-        numbers[last_idx - 1] += 1
-        last_idx -= 1
-    else:
-        if numbers[0] == 10:
-            numbers[0] = 1
-            numbers.append(0)
-    print(numbers)
-
-    return list_to_int(numbers)
-
-
-a = list_plus1_to_int([9, 9])
-b = list_plus1_to_int([7, 8, 9])
-print(a)  # 100
-print(b)  # 790
+alphabets = [s for _ in range(2) for s in string.ascii_lowercase]
+strings = ''.join(alphabets)
+for line in snake_string_v2(strings, 10):
+    print(''.join(line))
+    #      f                 x                 p
+    #     e g               w y               o q
+    #    d   h             v   z             n   r
+    #   c     i           u     a           m     s
+    #  b       j         t       b         l       t
+    # a         k       s         c       k         u
+    #            l     r           d     j           v
+    #             m   q             e   i             w
+    #              n p               f h               x z
+    #               o                 g                 y
