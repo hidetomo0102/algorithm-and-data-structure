@@ -1,23 +1,40 @@
-from typing import List, Iterator
+"""
+二部グラフの判定
+
+N := 頂点の数
+M := 辺の数
+"""
+from collections import defaultdict
+
+N, M = map(int, input().split())
+d = defaultdict(set)
+
+for i in range(M):
+    a, b = list(map(int, input().split()))
+
+    d[a].add(b)
+    d[b].add(a)
+
+color = [0 for i in range(N + 1)]
+res = "Yes"
 
 
-def all_perms(elements: List[int]) -> Iterator[List[int]]:
-    """
-    アプローチ
-    elementsの先頭をtempとする
-    そして残りの要素の組み合わせに応じてtempを配置する
+def dfs(v, c):
+    queue = []
 
-    ex) [1, 2, 3] => temp:1, rest: [2, 3]
-    1rap. 1, [2, 3] => [1, 2, 3] [2, 1, 3] [2, 3, 1]
-    2rap. 1, [3, 2] => [1, 3, 2] [3, 1, 2] [3, 2, 1]
-    """
-    if len(elements) <= 1:
-        yield elements
-    else:
-        for perm in all_perms(elements[1:]):
-            for i in range(len(elements)):
-                yield perm[:i] + elements[0:1] + perm[i:]
+    def _dfs(v, c, queue: list):
+        queue.append(v)
+
+        for i in list(d[v]):
+            if color[i] == c:
+                return "No"
+            elif i not in queue:
+                color[i] = c * -1
+                _dfs(i, -c, queue)
+        return "Yes"
+
+    return _dfs(v, c, queue)
 
 
-for p in all_perms([1, 2, 3]):
-    print(p)
+color[1] = 1
+print(dfs(1, 1))
