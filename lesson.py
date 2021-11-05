@@ -1,60 +1,15 @@
 """
-1. Check palindrome
-aba => True
-abc => False
-racecar => True
-
-2. Find palindrome
-abcracecarda => cec, aceca, rcecar
+偶数を先に、奇数を後に並べる
+[0, 1, 3, 4, 2, 4, 5, 1, 6, 2, 8] => [0, 4, 2, 4, 6, 8, 1, 3, 5, 1, 9]
 """
-from typing import Generator
+from typing import List
 
 
-def check_palindrome_v1(chars: str) -> bool:
-    if chars == chars[::-1]:
-        return True
-    return False
-
-
-def check_palindrome_v2(chars: str) -> bool:
-    len_char = len(chars)
-    if not len_char:
-        return False
-    if len_char == 1:
-        return True
-
-    start, end = 0, len_char - 1
-    while start < end:
-        if chars[start] != chars[end]:
-            return False
-        start += 1
-        end -= 1
-
-    return True
-
-
-def find_palindrome(chars: str) -> Generator:
-    len_chars = len(chars)
-
-    if not len_chars:
-        yield
-
-    if len_chars == 1:
-        yield chars
-
-    def _find_palindrome(chars: str, left: int, right: int) -> Generator:
-        while 0 <= left and right <= len(chars) - 1:
-            if chars[left] != chars[right]:
-                break
-
-            yield chars[left:right + 1]
-            left -= 1
-            right += 1
-
-    for i in range(1, len_chars - 1):
-        yield from _find_palindrome(chars, i - 1, i + 1)  # 奇数の場合
-        yield from _find_palindrome(chars, i - 1, i)  # 偶数の場合
-
-
-for s in find_palindrome("cabac"):
-    print(s)
+def order_even_first_odd_last(numbers: List[int]):
+    i, j = 0, len(numbers) - 1
+    while i < j:
+        if numbers[i] % 2 == 0:
+            i += 1
+        else:
+            numbers[i], numbers[j] = numbers[j], numbers[i]
+            j -= 1
