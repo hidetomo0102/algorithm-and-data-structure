@@ -1,0 +1,72 @@
+"""
+Generate Prime Numbers
+Input: 50 => [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 37, 41, 43, 47]
+"""
+import math
+from typing import List
+
+
+def generate_primes_v1(number: int) -> List[int]:
+    primes = []
+    cache = {}
+    for x in range(2, number + 1):
+        is_prime = cache.get(x)
+        if is_prime is False:
+            continue
+        primes.append(x)
+        cache[x] = True
+        for y in range(x * 2, number + 1, x):
+            cache[y] = False
+    return primes
+
+
+def generate_primes_v2(number: int) -> List[int]:
+    cache = {}
+    for x in range(2, number + 1):
+        is_prime = cache.get(x)
+        if is_prime is False:
+            continue
+        yield x
+        cache[x] = True
+        # 素数の倍数はprimeではない
+        for y in range(x * 2, number + 1, x):
+            cache[y] = False
+
+
+"""
+素数判定
+"""
+
+
+def is_prime_v1(num: int) -> bool:
+    if num <= 1:
+        return False
+    # √numまで見てあげればよい
+    for i in range(2, math.floor(math.sqrt(num) + 1)):
+        if num % i == 0:
+            return False
+    return True
+
+
+def is_prime_v2(num: int) -> bool:
+    if num <= 1:
+        return False
+    if num == 2:
+        return True
+    # 偶数は素数ではないのでスキップ
+    for i in range(3, math.floor(math.sqrt(num) + 1), 2):
+        if num % i == 0:
+            return False
+        return True
+
+
+def is_prime_v3(num: int) -> bool:
+    if num <= 1:
+        return False
+    if num % 2 == 0 or num % 3 == 0:
+        return False
+    # 6k ± 1で割り切れないものが素数
+    for i in range(5, math.floor(math.sqrt(num) + 1), 6):
+        if num % i == 0 or num % (i + 2) == 0:
+            return False
+        return True
