@@ -3,7 +3,8 @@ Generate Prime Numbers
 Input: 50 => [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 37, 41, 43, 47]
 """
 import math
-from typing import List
+from collections import defaultdict
+from typing import List, Tuple
 
 
 def generate_primes_v1(number: int) -> List[int]:
@@ -70,3 +71,37 @@ def is_prime_v3(num: int) -> bool:
         if num % i == 0 or num % (i + 2) == 0:
             return False
         return True
+
+
+"""
+ラハムジャンのTaxicab_number
+1729 = Ta(2) = 1**3 + 12**3 + = 9**3 + 10**3
+
+Input: 1, 2 => [(1729, [(1, 12), (9, 10))]
+Input: 2, 2 => [(1729, [(1, 12), (9, 10))], [(4104, [(2, 16), (9, 15))]
+Input: 1, 3 => [(87539319, [(167, 436), (228, 423), (225, 414))]
+"""
+
+
+def taxicab_number(max_ans_num: int, match_ans_num: int = 2) -> List[Tuple[int, List[Tuple[int, int]]]]:
+    result = []
+    got_ans_count = 0
+    ans = 1
+    while got_ans_count < max_ans_num:
+        match_ans_count = 0
+        memo = defaultdict(list)
+
+        max_param = int(pow(ans, 1.0 / 3)) + 1
+        for x in range(1, max_param):
+            for y in range(x + 1, max_param):
+                if x ** 3 + y == ans:
+                    match_ans_count += 1
+                    memo[ans].append((x, y))
+
+        if match_ans_count == match_ans_num:
+            result.append((ans, memo[ans]))
+            got_ans_count += 1
+
+        ans += 1
+
+    return result
