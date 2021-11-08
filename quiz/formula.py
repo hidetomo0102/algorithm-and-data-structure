@@ -105,3 +105,33 @@ def taxicab_number(max_ans_num: int, match_ans_num: int = 2) -> List[Tuple[int, 
         ans += 1
 
     return result
+
+
+"""
+フェルマーの最終定理を証明
+-> x**n + y**n = z**nについて、n <= 2までなら成立するが n >= 3では成立しない（x < y)
+
+Input: 10（x, yは10以下）, 2（乗数） => [(3, 4, 5), (6, 8, 10)]
+Input: 10, 3 => []
+Input: 10, 4 => []
+...
+10, n => []
+"""
+
+
+def fermat_last_theory(max_num: int, squire_num: int = 2) -> List[Tuple[int, int, int]]:
+    result = []
+    if squire_num < 2:
+        return result
+
+    for x in range(1, max_num + 1):
+        for y in range(x + 1, max_num + 1):
+            pow_sum = pow(x, squire_num) + pow(y, squire_num)
+            z = pow(pow_sum, 1.0 / squire_num)
+
+            if not z.is_integer():
+                continue
+
+            z_pow = pow(z, squire_num)
+            if z_pow == pow_sum:
+                result.append((x, y, z))
