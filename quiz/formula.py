@@ -132,6 +132,7 @@ def fermat_last_theory(max_num: int, squire_num: int = 2) -> List[Tuple[int, int
             if not z.is_integer():
                 continue
 
+            z = int(z)
             z_pow = pow(z, squire_num)
             if z_pow == pow_sum:
                 result.append((x, y, z))
