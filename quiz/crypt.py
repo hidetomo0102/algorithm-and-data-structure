@@ -52,3 +52,46 @@ def hack_ceasar_cipher(text: str) -> Generator[Tuple[int, str], None, None]:
             reverted += alphabet[index]
 
         yield candidate, reverted
+
+
+"""
+ヴィジュネル暗号
+"""
+
+ALPHABET = string.ascii_uppercase
+
+
+def generate_key(message: str, keyword: str) -> str:
+    key = keyword
+    remain_length = len(message) - len(keyword)
+    for i in range(remain_length):
+        key += key[i]
+
+    return key
+
+
+def encrypt(message: str, generated_key: str) -> str:
+    result = ''
+    for i, char in enumerate(message):
+        # スペースなどのとき
+        if char not in ALPHABET:
+            result += char
+            continue
+
+        index = (ALPHABET.index(char) + ALPHABET.index(generated_key[i])) % len(ALPHABET)
+        result += ALPHABET[index]
+
+    return result
+
+
+def decrypt(cipher_text: str, generated_key: str) -> str:
+    result = ''
+    for i, char in enumerate(cipher_text):
+        if char not in ALPHABET:
+            result += char
+            continue
+
+        index = (ALPHABET.index(char) - ALPHABET.index(generated_key[i]) + len(ALPHABET)) % len(ALPHABET)
+        result += ALPHABET[index]
+
+    return result
