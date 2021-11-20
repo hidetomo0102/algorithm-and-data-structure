@@ -1,15 +1,7 @@
-from typing import List
+def addBinary(a: str, b: str) -> str:
+    a, b = int(a, 2), int(b, 2)
+    return format(a + b, 'b')
 
 
-def plusOne(digits: List[int]) -> List[int]:
-    s = ""
-    for d in digits:
-        s += str(d)
-
-    a = int(s) + 1
-    return [int(x) for x in str(a)]
-
-
-a = plusOne([9])
-b = plusOne([4, 3, 2, 1])
+a = addBinary("1010", "1011")
 print(a)
