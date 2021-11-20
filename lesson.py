@@ -1,7 +1,17 @@
-def addBinary(a: str, b: str) -> str:
-    a, b = int(a, 2), int(b, 2)
-    return format(a + b, 'b')
+def mySqrt(x: int) -> int:
+    root = -1
+    start = 0
+    end = x
 
+    while start <= end:
+        mid = start + (end - start) // 2
+        if mid * mid == x:
+            root = mid
+            break
+        if mid * mid > x:
+            end = mid - 1
+        else:
+            start = mid + 1
+            root = mid
 
-a = addBinary("1010", "1011")
-print(a)
+    return root
