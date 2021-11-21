@@ -1,5 +1,21 @@
-def climbStairs(n: int) -> int:
-    s = [1, 1]
-    for i in range(2, n + 1):
-        s.append(s[-1] + s[-2])
-    return s[-1]
+from typing import Optional
+
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
+def deleteDuplicates(head: Optional[ListNode]) -> Optional[ListNode]:
+    current = head
+    prev = None
+
+    while current:
+        if prev and current.val == prev.val:
+            prev.next = current.next
+        else:
+            prev = current
+        current = current.next
+
+    return head
