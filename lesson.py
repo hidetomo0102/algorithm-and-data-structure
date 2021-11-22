@@ -1,21 +1,11 @@
-from typing import Optional
+from typing import List
 
 
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
+def merge(nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+    for i in range(m, m + n):
+        j = i - m
+        nums1[i] = nums2[j]
+    nums1[:] = sorted(nums1)
 
 
-def deleteDuplicates(head: Optional[ListNode]) -> Optional[ListNode]:
-    current = head
-    prev = None
-
-    while current:
-        if prev and current.val == prev.val:
-            prev.next = current.next
-        else:
-            prev = current
-        current = current.next
-
-    return head
+merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3)
