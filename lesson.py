@@ -1,11 +1,21 @@
-from typing import List
+# 94.Binary Tree Inorder Traversal
+from typing import Optional, List
 
 
-def merge(nums1: List[int], m: int, nums2: List[int], n: int) -> None:
-    for i in range(m, m + n):
-        j = i - m
-        nums1[i] = nums2[j]
-    nums1[:] = sorted(nums1)
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
 
-merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3)
+class Solution:
+    def __init__(self):
+        self.l = []
+
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        if root is not None:
+            self.inorderTraversal(root.left)
+            self.l.append(root.val)
+            self.inorderTraversal(root.right)
+        return self.l
