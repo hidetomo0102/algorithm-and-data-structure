@@ -1,5 +1,5 @@
-# 94.Binary Tree Inorder Traversal
-from typing import Optional, List
+# 100.Same Tree
+from typing import Optional
 
 
 class TreeNode:
@@ -10,12 +10,23 @@ class TreeNode:
 
 
 class Solution:
-    def __init__(self):
-        self.l = []
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        l1 = []
+        l2 = []
 
-    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
-        if root is not None:
-            self.inorderTraversal(root.left)
-            self.l.append(root.val)
-            self.inorderTraversal(root.right)
-        return self.l
+        def inorder(node: TreeNode, l: list):
+            if not node:
+                l.append(None)
+                return
+
+            inorder(node.left, l)
+            l.append(node.val)
+            inorder(node.right, l)
+
+        inorder(p, l1)
+        inorder(q, l2)
+
+        if l1 == l2:
+            return True
+
+        return False
