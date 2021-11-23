@@ -1,4 +1,4 @@
-# 100.Same Tree
+# 101.Symmetric Tree
 from typing import Optional
 
 
@@ -10,24 +10,17 @@ class TreeNode:
 
 
 class Solution:
-    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
-        l1 = []
-        l2 = []
-
-        def inorder(node: TreeNode, l: list):
-            if not node:
-                l.append(None)
-                return
-
-            l.append(node.val)
-
-            inorder(node.left, l)
-            inorder(node.right, l)
-
-        inorder(p, l1)
-        inorder(q, l2)
-
-        if l1 == l2:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        if root:
+            return self._is_symmetric(root.left, root.right)
+        else:
             return True
 
-        return False
+    def _is_symmetric(self, left: Optional[TreeNode], right: Optional[TreeNode]) -> bool:
+        if not left and not right:
+            return True
+        elif not left or not right:
+            return False
+        else:
+            return self._is_symmetric(left.right, right.left) and right.val == left.val and self._is_symmetric(
+                left.left, right.right)
