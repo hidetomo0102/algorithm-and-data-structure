@@ -19,8 +19,9 @@ class Solution:
                 l.append(None)
                 return
 
-            inorder(node.left, l)
             l.append(node.val)
+
+            inorder(node.left, l)
             inorder(node.right, l)
 
         inorder(p, l1)
