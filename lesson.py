@@ -1,5 +1,6 @@
-# 108.Convert Sorted Array to Binary Search Tree
-from typing import Optional, List
+# 110.Balanced Binary Tree
+from typing import Optional
+from collections import deque, defaultdict
 
 
 class TreeNode:
@@ -10,28 +11,30 @@ class TreeNode:
 
 
 class Solution:
-    def helper(self, left: int, right: int, nums: list):
-        if left > right:
-            return None
-        elif left == right:
-            return TreeNode(nums[left])
-        else:
-            node = TreeNode(nums[(left + right) // 2])
-            node.left = self.helper(left, ((left + right) // 2) - 1, nums)
-            node.right = self.helper(((left + right) // 2) + 1, right, nums)
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return True
 
-            return node
+        s = deque()
+        s.appendleft((root, -1, 0))
 
-    def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
-        if len(nums) == 0:
-            return None
+        r = deque()
 
-        if len(nums) == 1:
-            return TreeNode(nums[0])
+        while s:
+            node, parent, LR = s.popleft()
+            r.appendleft((node, parent, LR))
 
-        if len(nums) == 2:
-            node = TreeNode(nums[-1])
-            node.left = TreeNode(nums[0])
-            return node
+            if node.right:
+                s.appendleft((node.right, node, 1))
+            if node.left:
+                s.appendleft((node.left, node, 0))
 
-        return self.helper(0, len(nums) - 1, nums)
+        heights = defaultdict(lambda: [0, 0])
+        while r:
+            node, parent, LR = r.popleft()
+            node_heights = heights.get(node, [0, 0])
+            if abs(node_heights[0] - node_heights[1]) > 1:
+                return False
+            heights[parent][LR] = max(node_heights) + 1
+
+        return True
