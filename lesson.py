@@ -1,5 +1,5 @@
-# 104.Maximum Depth of Binary Tree
-from typing import Optional
+# 108.Convert Sorted Array to Binary Search Tree
+from typing import Optional, List
 
 
 class TreeNode:
@@ -10,8 +10,28 @@ class TreeNode:
 
 
 class Solution:
-    def maxDepth(self, root: Optional[TreeNode], res=0) -> int:
-        if not root:
-            return res
+    def helper(self, left: int, right: int, nums: list):
+        if left > right:
+            return None
+        elif left == right:
+            return TreeNode(nums[left])
+        else:
+            node = TreeNode(nums[(left + right) // 2])
+            node.left = self.helper(left, ((left + right) // 2) - 1, nums)
+            node.right = self.helper(((left + right) // 2) + 1, right, nums)
 
-        return max(self.maxDepth(root.left, res + 1), self.maxDepth(root.right, res + 1))
+            return node
+
+    def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
+        if len(nums) == 0:
+            return None
+
+        if len(nums) == 1:
+            return TreeNode(nums[0])
+
+        if len(nums) == 2:
+            node = TreeNode(nums[-1])
+            node.left = TreeNode(nums[0])
+            return node
+
+        return self.helper(0, len(nums) - 1, nums)
