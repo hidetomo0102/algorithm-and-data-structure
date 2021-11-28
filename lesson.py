@@ -1,4 +1,4 @@
-# 111.Minimum Depth of Binary Tree
+# 112.Path Sum
 
 from typing import Optional
 
@@ -11,16 +11,23 @@ class TreeNode:
 
 
 class Solution:
-    def minDepth(self, root: Optional[TreeNode]) -> int:
-        if not root:
-            return 0
+    def isLeaf(self, root: Optional[TreeNode]):
+        if root:
+            # if child exists, that's not leaf
+            if root.left or root.right:
+                return False
+            return True
 
-        left = self.minDepth(root.left)
-        right = self.minDepth(root.right)
+        return False
 
-        if left == 0:
-            return right + 1
-        elif right == 0:
-            return left + 1
-        else:
-            return min(left, right) + 1
+    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
+        if root:
+            if self.isLeaf(root) and targetSum - root.val == 0:
+                return True
+
+            if self.isLeaf(root) and targetSum - root.val != 0:
+                return False
+
+            return self.hasPathSum(root.left, targetSum - root.val) or self.hasPathSum(root.right, targetSum - root.val)
+
+        return False
