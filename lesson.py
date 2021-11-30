@@ -1,28 +1,17 @@
-from typing import Optional
-
-
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
+# 118.Pascal's Triangle
+from typing import List
 
 
 class Solution:
-    def is_leaf(self, root: Optional[TreeNode]) -> bool:
-        if root:
-            if root.left or root.right:
-                return False
-            return True
+    def generate(self, numRows: int) -> List[List[int]]:
+        data = [[1] * (i + 1) for i in range(numRows)]
 
-        return False
+        for line in range(2, numRows):
+            for i in range(1, line):
+                data[line][i] = data[line - 1][i - 1] + data[line - 1][i]
 
-    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
-        if root:
-            if self.is_leaf(root) and targetSum - root.val == 0:
-                return True
+        return data
 
-            if self.is_leaf(root) and targetSum - root.val != 0:
-                return False
 
-            return self.hasPathSum(root.left, targetSum - root.val) or self.hasPathSum(root.right, targetSum - root.val)
+s = Solution()
+s.generate(5)
