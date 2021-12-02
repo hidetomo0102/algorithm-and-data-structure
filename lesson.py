@@ -1,17 +1,16 @@
-# 118.Pascal's Triangle
+# 119.Pascal's Triangle II
 from typing import List
 
 
-class Solution:
-    def generate(self, numRows: int) -> List[List[int]]:
-        data = [[1] * (i + 1) for i in range(numRows)]
+def getRow(rowIndex: int) -> List[int]:
+    data = [[1] * (i + 1) for i in range(rowIndex + 1)]
 
-        for line in range(2, numRows):
-            for i in range(1, line):
-                data[line][i] = data[line - 1][i - 1] + data[line - 1][i]
+    for line in range(2, rowIndex + 1):
+        for i in range(1, line):
+            data[line][i] = data[line - 1][i - 1] + data[line - 1][i]
 
-        return data
+    return data[rowIndex]
 
 
-s = Solution()
-s.generate(5)
+a = getRow(1)
+print(a)
