@@ -1,12 +1,9 @@
-def isPalindrome(s: str) -> bool:
-    s = ''.join([c.lower() for c in s if c.isalpha() or c.isnumeric()])
-    if s == "":
-        return True
-
-    if s == s[::-1]:
-        return True
-    return False
+# 136.Single Number
+from typing import List
+from collections import Counter
 
 
-a = isPalindrome("0P")
-print(a)
+def singleNumber(nums: List[int]) -> int:
+    counter = Counter(nums)
+    c = counter.most_common()
+    return c[-1][0]
