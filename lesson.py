@@ -1,12 +1,12 @@
-# 121.Best Time to Buy and Sell Stock
-from typing import List
+def isPalindrome(s: str) -> bool:
+    s = ''.join([c.lower() for c in s if c.isalpha() or c.isnumeric()])
+    if s == "":
+        return True
+
+    if s == s[::-1]:
+        return True
+    return False
 
 
-def maxProfit(prices: List[int]) -> int:
-    profit = 0
-
-    for i in range(1, len(prices)):
-        profit = max(profit, prices[i] - prices[i - 1])
-        prices[i] = min(prices[i], prices[i - 1])
-
-    return profit
+a = isPalindrome("0P")
+print(a)
