@@ -1,22 +1,25 @@
 # 141.Linked List Cycle
-from typing import Optional
+from typing import Optional, List
 
 
-class ListNode:
-    def __init__(self, x):
-        self.val = x
-        self.next = None
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
 
-def hasCycle(head: Optional[ListNode]) -> bool:
-    if not head:
-        return False
+def preorderTraversal(root: Optional[TreeNode]) -> List[int]:
+    if not root:
+        return []
 
-    p = head
-    while p:
-        if p.val == "v":
-            return True
-        p.val = "v"
-        p = p.next
+    ans = []
 
-    return False
+    def _inorder(root: TreeNode, ans: list):
+        if root:
+            ans.append(root.val)
+            _inorder(root.left, ans)
+            _inorder(root.right, ans)
+
+    _inorder(root, ans)
+    return ans
