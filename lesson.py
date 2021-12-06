@@ -1,4 +1,4 @@
-# 141.Linked List Cycle
+# 145.Binary Tree PostOrder Traversal
 from typing import Optional, List
 
 
@@ -17,9 +17,9 @@ def preorderTraversal(root: Optional[TreeNode]) -> List[int]:
 
     def _inorder(root: TreeNode, ans: list):
         if root:
-            ans.append(root.val)
-            _inorder(root.left, ans)
             _inorder(root.right, ans)
+            _inorder(root.left, ans)
+            ans.append(root.val)
 
     _inorder(root, ans)
     return ans
