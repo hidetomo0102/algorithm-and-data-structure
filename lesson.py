@@ -1,25 +1,25 @@
-# 145.Binary Tree PostOrder Traversal
-from typing import Optional, List
+# 155.Min Stack
 
 
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
+class MinStack:
 
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
 
-def preorderTraversal(root: Optional[TreeNode]) -> List[int]:
-    if not root:
-        return []
+    def push(self, val: int) -> None:
+        self.stack.append(val)
+        if not self.min_stack:
+            self.min_stack.append(val)
+        else:
+            self.min_stack.append(min(val, self.min_stack[-1]))
 
-    ans = []
+    def pop(self) -> None:
+        self.stack.pop()
+        self.min_stack.pop()
 
-    def _inorder(root: TreeNode, ans: list):
-        if root:
-            _inorder(root.right, ans)
-            _inorder(root.left, ans)
-            ans.append(root.val)
+    def top(self) -> int:
+        return self.stack[-1]
 
-    _inorder(root, ans)
-    return ans
+    def getMin(self) -> int:
+        return self.min_stack[-1]
