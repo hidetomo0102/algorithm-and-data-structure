@@ -1,27 +1,15 @@
-# 160.Intersection of Two Linked Lists
-from typing import Optional
+# 167.Two Sum II - Input Array Is Sorted
+from typing import List
 
 
-class ListNode:
-    def __init__(self, x):
-        self.val = x
-        self.next = None
+def twoSum(numbers: List[int], target: int) -> List[int]:
+    N = len(numbers)
+    lookup = {}
 
+    for i in range(N):
+        residue = target - numbers[i]
 
-class Solution:
-    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
-        if not headA or not headB:
-            return None
-
-        nodes = set()
-        p1 = headA
-        while p1:
-            nodes.add(p1)
-            p1 = p1.next
-        p1 = headB
-        while p1:
-            if p1 in nodes:
-                return p1
-            p1 = p1.next
-
-        return None
+        if residue not in lookup:
+            lookup[numbers[i]] = i
+        else:
+            return [lookup[residue] + 1, i + 1]
