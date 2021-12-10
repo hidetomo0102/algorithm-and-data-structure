@@ -45,5 +45,61 @@ def plus_one_list_to_int(numbers: List[int]) -> int:
     return list_to_int(numbers)
 
 
-a = plus_one_list_to_int([9, 9, 9])
-print(a)
+"""
+スネーク表示
+"""
+
+
+def list_to_snake(result: List[List[str]]):
+    for line in result:
+        print(''.join(line))
+
+
+def snake_string_v1(chars: str):
+    result = [[], [], []]
+    result_indexes = {0, 1, 2}
+
+    insert_index = 1
+
+    for i, char in enumerate(chars):
+        if i % 4 == 1:
+            insert_index = 0
+        elif i % 2 == 0:
+            insert_index = 1
+        elif i % 4 == 3:
+            insert_index = 2
+
+        result[insert_index].append(char)
+        for rest in result_indexes - {insert_index}:
+            result[rest].append(' ')
+
+    list_to_snake(result)
+
+
+def snake_strings_v2(chars: str, depth: int):
+    result = [[] for _ in range(depth)]
+    result_indexes = {i for i in range(depth)}
+    insert_index = int(depth / 2)
+
+    def pos(i):
+        return i + 1
+
+    def neg(i):
+        return i - 1
+
+    ops = neg
+
+    for c in chars:
+        result[insert_index].append(c)
+        for rest in result_indexes - {insert_index}:
+            result[rest].append(" ")
+
+        if insert_index <= 0:
+            ops = pos
+
+        if insert_index >= depth - 1:
+            ops = neg
+
+        insert_index = ops(insert_index)
+
+    return result
