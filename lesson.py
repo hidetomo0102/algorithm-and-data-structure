@@ -1,15 +1,16 @@
-# 167.Two Sum II - Input Array Is Sorted
-from typing import List
+# 168.Excel Sheet Column Title
 
 
-def twoSum(numbers: List[int], target: int) -> List[int]:
-    N = len(numbers)
-    lookup = {}
+def convertToTitle(columnNumber: int) -> str:
+    result = ""
+    while columnNumber:
+        residue = columnNumber % 26
 
-    for i in range(N):
-        residue = target - numbers[i]
-
-        if residue not in lookup:
-            lookup[numbers[i]] = i
+        if residue == 0:
+            result = chr(90) + result
+            columnNumber = columnNumber // 26 - 1
         else:
-            return [lookup[residue] + 1, i + 1]
+            result = chr(64 + residue) + result
+            columnNumber = columnNumber // 26
+
+    return result
