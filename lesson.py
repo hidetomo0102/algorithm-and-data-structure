@@ -1,16 +1,8 @@
-# 168.Excel Sheet Column Title
+# 169.Majority Element
+from collections import Counter
+from typing import List
 
 
-def convertToTitle(columnNumber: int) -> str:
-    result = ""
-    while columnNumber:
-        residue = columnNumber % 26
-
-        if residue == 0:
-            result = chr(90) + result
-            columnNumber = columnNumber // 26 - 1
-        else:
-            result = chr(64 + residue) + result
-            columnNumber = columnNumber // 26
-
-    return result
+def majorityElement(nums: List[int]) -> int:
+    counter = Counter(nums)
+    return counter.most_common()[0][0]
