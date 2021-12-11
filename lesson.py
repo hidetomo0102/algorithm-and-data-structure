@@ -1,8 +1,13 @@
-# 169.Majority Element
-from collections import Counter
-from typing import List
+# 171.Excel Sheet Column Number
 
 
-def majorityElement(nums: List[int]) -> int:
-    counter = Counter(nums)
-    return counter.most_common()[0][0]
+def titleToNumber(columnTitle: str) -> int:
+    res = 0
+    for col in columnTitle:
+        res = (res * 26 + ord(col) - 64)
+
+    return res
+
+
+a = titleToNumber("AB")
+print(a)
