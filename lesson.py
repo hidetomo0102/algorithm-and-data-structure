@@ -1,8 +1,24 @@
-# 191.Number of 1 Bits
-from collections import Counter
+# 20.Valid Parentheses
+def isValid(self, s: str) -> bool:
+    opening = "({["
+    closing = ")}]"
+    match = {
+        '}': "{",
+        "]": "[",
+        ")": "("
+    }
 
+    stack = []
+    for char in s:
+        if char in opening:
+            stack.append(char)
+        elif char in closing:
+            if not stack:
+                return False
 
-def hammingWeight(n: int) -> int:
-    n = bin(n)
-    counter = Counter(n)
-    return counter.get("1", 0)
+            if stack[-1] == match[char]:
+                stack.pop()
+            else:
+                return False
+
+    return len(stack) == 0
