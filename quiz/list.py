@@ -103,3 +103,30 @@ def snake_strings_v2(chars: str, depth: int):
         insert_index = ops(insert_index)
 
     return result
+
+
+"""
+1. Maximum subarray sum
+Input: [1, -2, 3, 6, -1, 2, 4, -5, 2]
+Output: 14
+
+2. Maximum circular subarray sum
+Input: [1, -2, 3, 6, -1, 2, 4, -5, 2]
+Output: 15
+"""
+
+
+def get_sequence_sum(numbers: List[int], ops) -> int:
+    result, sum_sequence = 0, 0
+    for num in numbers:
+        # 累積和 + num > numなら継続
+        sum_sequence = ops(num, num + sum_sequence)
+        result = ops(result, sum_sequence)
+
+    return result
+
+
+def get_max_circular_sum(numbers: List[int]) -> int:
+    # 全体の合計値からmin_sequence_sumを引いてあげる
+    total = sum(numbers)
+    return total - get_sequence_sum(numbers, min)
