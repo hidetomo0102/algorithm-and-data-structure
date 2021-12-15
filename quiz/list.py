@@ -130,3 +130,17 @@ def get_max_circular_sum(numbers: List[int]) -> int:
     # 全体の合計値からmin_sequence_sumを引いてあげる
     total = sum(numbers)
     return total - get_sequence_sum(numbers, min)
+
+
+"""
+[1, 3, 3, 5, 5, 7, 7, 7, 10, 12, 12, 15] => [1, 3, 5, 7, 10, 12, 15]
+"""
+
+
+# 条件：引数のnumbersを直接書き換える
+def remove_duplicate(numbers: List[int]):
+    i = len(numbers) - 1
+    while i > 0:
+        if numbers[i] == numbers[i - 1]:
+            numbers.pop(i)
+        i -= 1
