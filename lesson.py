@@ -1,16 +1,16 @@
-# 7.Reverse Integer
+# C - Dice and Coin
+N, K = map(int, input().split())
 
-
-def reverse(x: int) -> int:
-    if x == 0:
-        return x
-
-    if x > 0:
-        nums = int(str(x)[::-1])
+possibility = 0
+for i in range(1, N + 1):
+    if i >= K:
+        possibility += 1 / N
     else:
-        nums = -int(str(x)[:-2])
+        s = i
+        prob = 1 / N
+        while s < K:
+            prob *= 0.5
+            s *= 2
+        possibility += prob
 
-    if abs(nums) > pow(2, 31):
-        return 0
-
-    return nums
+print(possibility)
