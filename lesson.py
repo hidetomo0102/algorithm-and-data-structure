@@ -1,16 +1,10 @@
-# C - Dice and Coin
-N, K = map(int, input().split())
+# ABC127 C - Prison
+N, M = map(int, input().split())
 
-possibility = 0
-for i in range(1, N + 1):
-    if i >= K:
-        possibility += 1 / N
-    else:
-        s = i
-        prob = 1 / N
-        while s < K:
-            prob *= 0.5
-            s *= 2
-        possibility += prob
+l, r = map(int, input().split())
+for _ in range(M - 1):
+    L, R = map(int, input().split())
+    l = max(l, L)
+    r = min(r, R)
 
-print(possibility)
+print(max(0, r - l + 1))
