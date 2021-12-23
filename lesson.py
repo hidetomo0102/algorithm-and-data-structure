@@ -1,31 +1,15 @@
-# ABC128 C - Switches
-from itertools import product
-
-
-def judge(pro):
-    # 電球iに繋がったスイッチが押された回数
-    count = [0] * M
-    for i in range(N):
-        if not pro[i]:
-            continue
-        for x in S[i]:
-            count[x] += 1
-
-    for p, c in zip(P, count):
-        if c % 2 != p:
-            return 0
-    return 1
-
-
+# ABC129 C - Typical Stairs
 N, M = map(int, input().split())
-S = [[] for _ in range(M)]
-for i in range(M):
-    k, *T = map(int, input().split())
-    for x in T:
-        S[x - 1].append(i)
+obstacles = [int(input()) for _ in range(M)]
 
-P = list(map(int, input().split()))
+dp = [0] * N
+dp[0] = 1
 
-ans = 0
-for pro in product((0, 1), repeat=N):
-    ans += judge(pro)
+for i in range(N):
+    for d in range(1, 3):
+        step = i + d
+        if step > N or step in obstacles:
+            continue
+        dp[i + d] += dp[i]
+
+print(dp[N] % (1000 ** 3 + 7))
