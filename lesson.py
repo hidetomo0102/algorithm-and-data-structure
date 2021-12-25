@@ -1,15 +1,9 @@
-# ABC129 C - Typical Stairs
-N, M = map(int, input().split())
-obstacles = [int(input()) for _ in range(M)]
+# ABC130 C - Rectangle Cutting
 
-dp = [0] * N
-dp[0] = 1
+W, H, x, y = map(float, input().split())
 
-for i in range(N):
-    for d in range(1, 3):
-        step = i + d
-        if step > N or step in obstacles:
-            continue
-        dp[i + d] += dp[i]
+count = 0
+if (x == W / 2) and (y == H / 2):
+    count = 1
 
-print(dp[N] % (1000 ** 3 + 7))
+print((W * H) / 2, count)
